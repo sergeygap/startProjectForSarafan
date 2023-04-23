@@ -12,15 +12,14 @@ import com.sergey_gap.startprojectforsarafan.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
 
-
-    private lateinit var binding: FragmentSplashBinding
+    private var _binding: FragmentSplashBinding? = null
+    private val mBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
-        return binding.root
+    ): View? {
+        _binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
+        return mBinding.root
     }
-
 }

@@ -1,11 +1,8 @@
 package com.sergey_gap.startprojectforsarafan.utils
 
-class Constans {
-
-    companion object{
-        const val BASE_URL = "https://api.nytimes.com"
-        const val API_KEY = "5D77JRO26yRe5tH3lSMxKpOGtc5TIcbz"
+class Constants {
+    companion object {
+        const val BASE_URL = "https://newsapi.org/"
+        const val API_KEY = "7b5837f4a5f94d1c9ae2d492d0b4ce8c"
     }
-
-
 }

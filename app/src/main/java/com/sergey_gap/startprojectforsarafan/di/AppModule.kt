@@ -1,7 +1,8 @@
 package com.sergey_gap.startprojectforsarafan.di
 
 import com.sergey_gap.startprojectforsarafan.data.api.NewsService
-import com.sergey_gap.startprojectforsarafan.utils.Constans.Companion.BASE_URL
+
+import com.sergey_gap.startprojectforsarafan.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,13 +13,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Provides
     fun baseUrl() = BASE_URL
-
 
     @Provides
     fun logging() = HttpLoggingInterceptor()
@@ -38,5 +40,4 @@ object AppModule {
             .client(okHttpClient())
             .build()
             .create(NewsService::class.java)
-
 }
