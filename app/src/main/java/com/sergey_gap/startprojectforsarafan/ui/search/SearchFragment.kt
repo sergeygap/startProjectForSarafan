@@ -1,7 +1,7 @@
-package com.sergey_gap.startprojectforsarafan.ui.main
-
+package com.sergey_gap.startprojectforsarafan.ui.search
 
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,47 +9,57 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sergey_gap.startprojectforsarafan.databinding.FragmentMainBinding
+import com.sergey_gap.startprojectforsarafan.R
+import com.sergey_gap.startprojectforsarafan.databinding.FragmentSearchBinding
 import com.sergey_gap.startprojectforsarafan.ui.adapters.NewsAdapter
 import com.sergey_gap.startprojectforsarafan.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import ru.mvlikhachev.newsapp.ui.search.SearchViewModel
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
+class SearchFragment : Fragment() {
+
+    private var _binding: FragmentSearchBinding? = null
     private val mBinding get() = _binding!!
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<SearchViewModel>()
     lateinit var newsAdapter: NewsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMainBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initAdapter()
-        viewModel.newsLiveData.observe(viewLifecycleOwner) { responce ->
+        var job: Job? = null
+
+        viewModel.searchNewsLiveData.observe(viewLifecycleOwner) { responce ->
             when(responce) {
                 is Resource.Success -> {
-                    pag_progress_bar.visibility = View.INVISIBLE
+                    pag_search_progress_bar.visibility = View.INVISIBLE
                     responce.data?.let {
                         newsAdapter.differ.submitList(it.articles)
                     }
                 }
                 is Resource.Error -> {
-                    pag_progress_bar.visibility = View.INVISIBLE
+                    pag_search_progress_bar.visibility = View.INVISIBLE
                     responce.data?.let {
                         Log.e("checkData", "MainFragment: error: ${it}")
                     }
                 }
                 is Resource.Loading -> {
-                    pag_progress_bar.visibility = View.VISIBLE
+                    pag_search_progress_bar.visibility = View.VISIBLE
                 }
             }
         }
@@ -57,7 +67,7 @@ class MainFragment : Fragment() {
 
     private fun initAdapter() {
         newsAdapter = NewsAdapter()
-        news_adapter.apply {
+        search_news_adapter.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
